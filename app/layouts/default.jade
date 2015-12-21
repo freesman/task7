@@ -2,7 +2,7 @@ doctype html
 html.no-js
   head
     meta(charset='utf-8')
-    title My Webapp
+    title standard document form
     meta(name='description' content='')
     meta(name='viewport' content='width=device-width, initial-scale=1')
     link(rel='apple-touch-icon' href='apple-touch-icon.png')
@@ -13,6 +13,17 @@ html.no-js
     .container
       block content
 
-    script(src='../bower_components/jquery/dist/jquery.js')
     script(src='../bower_components/modernizr/modernizr.js')
+
+    script(src='../bower_components/jquery/dist/jquery.js')
+    script(src='../bower_components/jquery.inputmask/dist/inputmask/inputmask.js')
+    script(src='../bower_components/jquery.inputmask/dist/inputmask/inputmask.date.extensions.js')
+    script(src='../bower_components/jquery.inputmask/dist/inputmask/inputmask.extensions.js')
+    script(src='../bower_components/jquery.inputmask/dist/inputmask/jquery.inputmask.js')
+
+    script(src='../bower_components/underscore/underscore.js')
+    script(src='../bower_components/backbone/backbone.js')
+    script(src='../bower_components/backbone.epoxy/backbone.epoxy.js')
+    script(src='../bower_components/backbone.localStorage/backbone.localStorage.js')
+
     script(src='scripts/main.js')

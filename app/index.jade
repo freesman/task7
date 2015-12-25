@@ -1,4 +1,27 @@
 extends layouts/default
 
 block content
-  p hello :)
+  .doc
+    #docform
+      input.name(placeholder = 'name', data-bind= 'value:name, events:["keyup"]')
+      input.lastName(placeholder = 'lastName', data-bind= 'value:lastName, events:["keyup"]')
+      input.phone(placeholder = 'phone number', data-bind= 'value:phone, events:["keyup"]')
+      input.mail(placeholder = 'e-mail', data-bind= 'value:mail, events:["keyup"]')
+      input.date(placeholder = 'date', data-bind= 'value:date, events:["keyup"]')
+    #doctext
+      input#clearBut.btn.btn-danger(type = 'button', value = 'clear field & local data')
+      p.jumbotron.
+        Worker #[span(data-bind='text:select(name, name, "*name")')]
+        #[span(data-bind='text:select(lastName, lastName, "*lastName")')]
+        wants to use the phone with number:
+        #[span(data-bind='text:select(phone, phone, "*number")')] and get a letter
+        with the answer on e-mail: #[span(data-bind='text:select(mail, mail, "*mail")')]
+        at #[span(data-bind='text:select(date, date, "*date")')].
+      button#submitBut.btn.btn-success submit
+      #alertWarn.alert.alert-danger
+        a.close(href = '#' arial-label = 'close') &times;
+        strong Warning!
+        span.WarningMes mytext
+      #alertSuccess.alert.alert-success
+        strong Success!
+        span.sucMes submiting complete

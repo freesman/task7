@@ -3,3 +3,85 @@ $icon-font-path: '../fonts/';
 // bower:scss
 @import "bower_components/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
 // endbower
+
+.doc{
+margin-top:100px;
+}
+
+.doc div{
+display:inline-block;
+width:400px;
+vertical-align:top;
+}
+
+#docform input{
+display: block;
+margin-bottom:10px;
+font-size:26px;
+margin-left:35px;
+border: thin solid #A9A9A9;
+padding-left: 5px;
+outline: none;
+border-radius: 6px;
+}
+
+#docform{
+margin-top:20px;
+width:400px;
+}
+
+#doctext{
+margin-top:20px;
+font-family:verdana;
+font-size:16px;
+width:600px;
+line-height:29px;
+word-spacing:1px;
+position: relative;
+}
+
+#doctext span{
+font-weight:bold;
+}
+
+#doctext p{
+  padding: 20px;
+}
+
+#submitBut{
+font-size:16px;
+margin-left:230px;
+margin-top:-20px;
+}
+
+#clearBut{
+font-size:16px;
+margin-left:500px;
+margin-bottom:30px;
+}
+
+#alertWarn{
+  display: none;
+  position: absolute;
+  left: -2px;
+  top: -37px;
+  width: 450px;
+}
+
+#alertWarn .WarningMes{
+  font-weight: normal;
+  padding-left: 10px;
+}
+
+#alertSuccess{
+  width: 280px;
+  position: absolute;
+  right: 190px;
+  bottom: -100px;
+  display: none;
+}
+
+#alertSuccess .sucMes{
+  padding-left: 10px;
+  font-weight: normal;
+}

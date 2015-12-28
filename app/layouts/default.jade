@@ -13,16 +13,10 @@ html.no-js
     .container
       block content
 
+    //build:modernizr
     script(src='../bower_components/modernizr/modernizr.js')
+    //endbuild
 
-    script(src='../bower_components/jquery/dist/jquery.js')
-    script(src='../bower_components/jquery.inputmask/dist/inputmask/inputmask.js')
-    script(src='../bower_components/jquery.inputmask/dist/inputmask/inputmask.date.extensions.js')
-    script(src='../bower_components/jquery.inputmask/dist/inputmask/inputmask.extensions.js')
-    script(src='../bower_components/jquery.inputmask/dist/inputmask/jquery.inputmask.js')
-
-    script(src='../bower_components/underscore/underscore.js')
-    script(src='../bower_components/backbone/backbone.js')
-    script(src='../bower_components/backbone.epoxy/backbone.epoxy.js')
-
-    script(src='scripts/main.js')
+    //build:require
+    script(data-main='scripts/main' src='../bower_components/requirejs/require.js')
+    //endbuild

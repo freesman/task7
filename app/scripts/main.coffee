@@ -1,100 +1,23 @@
-#-------- MODEL ------------
-Person = Backbone.Model.extend(
-  defaults:
-    name: ''
-    lastName: ''
-    phone: ''
-    mail: ''
-    date: ''
+require.config(
+  shim:
+    underscore:
+      exports: '_'
+    backbone:
+      deps: ['underscore', 'jquery']
+      exports: 'Backbone'
+    epoxy:
+      deps: ['underscore', 'jquery', 'backbone']
+      exports: 'Epoxy'
+  paths:
+    jquery: '../../bower_components/jquery/dist/jquery'
+    underscore: '../../bower_components/underscore/underscore'
+    backbone: '../../bower_components/backbone/backbone'
+    epoxy: '../../bower_components/backbone.epoxy/backbone.epoxy'
+    inputmask: '../../bower_components/jquery.inputmask/dist/jquery.inputmask.bundle'
 )
 
-#------- MODEL VIEW---------
-PersonView = Backbone.Epoxy.View.extend(
-  el:'.doc'
-  model: new Person(JSON.parse(localStorage.getItem('person')))
-  bindings: 'data-bind'
-  bindingHandlers:
-    saveToModel:
-      get: ($element) ->
-        return $element.val()
-  initialize: ->
-    this.listenTo(this.model, 'change', this.localSave)
-    this.aliases()
-    this.render()
-  render: ->
-    this.$('.name').inputmask('name')
-    this.$('.lastName').inputmask('name')
-    this.$('.phone').inputmask('myPhone')
-    this.$('.mail').inputmask('myEmail')
-    this.$('.date').inputmask('myDate')
-  events:
-    'click #submitBut': 'submiting'
-    'click #clearBut': 'clearing'
-    'click .close': 'closeAlert'
-  submiting: ->
-    this.$submit = 0
-    this.$warn = 'fields not complete:'
-    this.validator('name', 1, '')
-    this.validator('lastName', 1, '')
-    this.validator('phone', 16, '_')
-    this.validator('mail', 1, '_')
-    this.validator('date', 10, '[dmy]')
-    if this.$submit > 0 then this.alert('warning')
-    else this.alert('success')
-  validator: (attr, valLength, char) -> # valid test for submiting
-    value = this.model.get(attr)
-    replacer = new RegExp(char, 'gi')
-    if char then value = value.replace(replacer, '')
-    if attr == 'mail'
-      testMas = value.split('@')
-      if testMas[0] != '' and testMas[1] != '' then return false
-      else value = ''
-    if value.length < valLength
-      this.$warn += " '" + attr + "'"
-      this.$submit++
-  clearing: ->
-    this.closeAlert()
-    this.model.set(this.model.defaults)
-  localSave: ->
-    localStorage.setItem('person', JSON.stringify(this.model.toJSON()))
-  aliases: -> # mask templates for each attribute
-    Inputmask.extendAliases(
-      'name':
-        mask: 'a{1,20}'
-        onincomplete: (e) -> $(e.currentTarget).css('border-color', '#A9A9A9')
-        oncomplete: (e)-> $(e.currentTarget).css('border-color', 'green')
-    )
-    Inputmask.extendAliases(
-      'myPhone':
-        mask: '+7(999)999-99-99'
-        onincomplete: (e) ->personView.checkMask($(e.currentTarget))
-        oncomplete: (e) -> $(e.currentTarget).css('border-color', 'green')
-    )
-    Inputmask.extendAliases(
-      'myEmail':
-        alias: 'email'
-        onincomplete: (e) -> personView.checkMask($(e.currentTarget))
-        oncomplete: (e) -> $(e.currentTarget).css('border-color', 'green')
-    )
-    Inputmask.extendAliases(
-      'myDate':
-        alias: 'date'
-        onincomplete: (e) -> personView.checkMask($(e.currentTarget))
-        oncomplete: (e) -> $(e.currentTarget).css('border-color', 'green')
-    )
-  checkMask: (element) ->
-    if element.val()
-      element.css('border-color', 'red')
-    else element.css('border-color', '#A9A9A9')
-  alert: (switcher) ->
-    this.closeAlert()
-    if switcher == 'warning'
-      $('#alertWarn').fadeIn(0)
-      $('.WarningMes').text(this.$warn)
-    if switcher == 'success'
-      $('#alertSuccess').fadeIn(650).delay(1300).fadeOut(650)
-  closeAlert: ->
-    $('#alertWarn').fadeOut(0)
+require(
+  ['backbone', 'views/appView']
+  (Backbone, AppView) ->
+    new AppView()
 )
-
-personView = new PersonView()

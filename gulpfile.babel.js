@@ -19,6 +19,7 @@ gulp.task('styles', () => {
     .pipe($.autoprefixer({browsers: ['last 1 version']}))
     .pipe($.sourcemaps.write())
     .pipe(gulp.dest('.tmp/styles'))
+    .pipe(gulp.dest('dist/styles'))
     .pipe(reload({stream: true}));
 });
 
@@ -26,6 +27,13 @@ gulp.task('html', ['views', 'styles', 'scripts'], () => {
   return gulp.src(['app/*.html', '.tmp/*.html'])
     .pipe($.if('*.js', $.uglify()))
     .pipe($.if('*.css', $.minifyCss({compatibility: '*'})))
+    .pipe($.htmlReplace({
+      modernizr: 'scripts/bower/modernizr.js',
+      require:{
+        src: [['scripts/main', 'scripts/bower/require.js']],
+        tpl: '<script data-main="%s" src="%s"></script>',
+      }
+    }))
     .pipe($.if('*.html', $.minifyHtml({conditionals: true, loose: true})))
     .pipe(gulp.dest('dist'));
 });
@@ -120,13 +128,19 @@ gulp.task('serve:test', () => {
   gulp.watch('test/spec/**/*.js').on('change', reload);
 });
 
-gulp.task('build', ['html', 'images', 'fonts', 'extras'], () => {
-  return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
+// default building all components
+gulp.task('default', ['clean'], () => {
+  gulp.start('build-modules');
 });
 
-gulp.task('default', ['clean'], () => {
-  gulp.start('build');
+gulp.task('build-modules', ['html', 'bower', 'bower:path', 'images', 'fonts', 'extras'], () => {
+  gulp.start('build-size');
 });
+
+gulp.task('build-size', ['modules'], () => {
+  return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
+});
+// --- end def building
 
 gulp.task('views', () => {
   return gulp.src('app/*.jade')
@@ -139,4 +153,33 @@ gulp.task('scripts', () => {
   return gulp.src('app/scripts/**/*.coffee')
     .pipe($.coffee())
     .pipe(gulp.dest('.tmp/scripts'));
+});
+
+gulp.task('bower:path', () => {
+  return gulp.src(['dist/index.html'])
+    .pipe($.htmlReplace({
+      modernizr: 'scripts/bower/modernizr.js',
+      require:{
+        src: [['scripts/main', 'scripts/bower/require.js']],
+        tpl: '<script data-main="%s" src="%s"></script>',
+      }
+    }))
+    .pipe(gulp.dest('dist/html'));
+});
+
+gulp.task('bower', () => {
+  return gulp.src(['bower_components/modernizr/modernizr.js', 'bower_components/requirejs/require.js'])
+    .pipe(gulp.dest('dist/scripts/bower'));
+});
+
+gulp.task('modules', $.shell.task(['r.js.cmd -o build.js']));
+
+gulp.task('dep', () => {
+  return gulp.src('./dist/**/*')
+    .pipe($.ghPages());
+});
+
+gulp.task('deploy', ['build-size'], () => {
+  return gulp.src('./dist/**/*')
+    .pipe($.ghPages());
 });

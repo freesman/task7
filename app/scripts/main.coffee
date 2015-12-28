@@ -13,12 +13,10 @@ PersonView = Backbone.Epoxy.View.extend(
   el:'.doc'
   model: new Person(JSON.parse(localStorage.getItem('person')))
   bindings: 'data-bind'
-
   bindingHandlers:
     saveToModel:
       get: ($element) ->
         return $element.val()
-
   initialize: ->
     this.listenTo(this.model, 'change', this.localSave)
     this.aliases()

@@ -12,6 +12,13 @@ Person = Backbone.Model.extend(
 PersonView = Backbone.Epoxy.View.extend(
   el:'.doc'
   model: new Person(JSON.parse(localStorage.getItem('person')))
+  bindings: 'data-bind'
+
+  bindingHandlers:
+    saveToModel:
+      get: ($element) ->
+        return $element.val()
+
   initialize: ->
     this.listenTo(this.model, 'change', this.localSave)
     this.aliases()
@@ -38,7 +45,6 @@ PersonView = Backbone.Epoxy.View.extend(
     else this.alert('success')
   validator: (attr, valLength, char) -> # valid test for submiting
     value = this.model.get(attr)
-    #if !value then this.checkMask()
     replacer = new RegExp(char, 'gi')
     if char then value = value.replace(replacer, '')
     if attr == 'mail'
@@ -78,11 +84,10 @@ PersonView = Backbone.Epoxy.View.extend(
         onincomplete: (e) -> personView.checkMask($(e.currentTarget))
         oncomplete: (e) -> $(e.currentTarget).css('border-color', 'green')
     )
-  checkMask: (element, status) ->
-    switch status
-      when 'clear' then element.css('border-color', '#A9A9A9')
-      when 'incomplete' then element.css('border-color', 'red')
-      when 'complete' then element.css('border-color', 'green')
+  checkMask: (element) ->
+    if element.val()
+      element.css('border-color', 'red')
+    else element.css('border-color', '#A9A9A9')
   alert: (switcher) ->
     this.closeAlert()
     if switcher == 'warning'

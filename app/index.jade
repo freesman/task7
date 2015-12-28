@@ -3,11 +3,11 @@ extends layouts/default
 block content
   .doc
     #docform
-      input.name(placeholder = 'name', data-bind= 'value:name, events:["keyup"]')
-      input.lastName(placeholder = 'lastName', data-bind= 'value:lastName, events:["keyup"]')
-      input.phone(placeholder = 'phone number', data-bind= 'value:phone, events:["keyup"]')
-      input.mail(placeholder = 'e-mail', data-bind= 'value:mail, events:["keyup"]')
-      input.date(placeholder = 'date', data-bind= 'value:date, events:["keyup"]')
+      input.name(placeholder = 'name', data-bind= 'saveToModel:name, events:["keyup"]')
+      input.lastName(placeholder = 'lastName', data-bind= 'saveToModel:lastName, events:["keyup"]')
+      input.phone(placeholder = 'phone number', data-bind= 'saveToModel:phone, events:["keyup"]')
+      input.mail(placeholder = 'e-mail', data-bind= 'saveToModel:mail, events:["keyup"]')
+      input.date(placeholder = 'date', data-bind= 'saveToModel:date, events:["keyup"]')
     #doctext
       input#clearBut.btn.btn-danger(type = 'button', value = 'clear field & local data')
       p.jumbotron.
